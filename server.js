@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 // 1. Database Connect Karein
-mongoose.connect('AAPA_MONGODB_URI_HERE');
+mongoose.connect('dkumarshukla63_db_user');
 
 // User, Keys aur Transaction Database Schema
 const User = mongoose.model('User', new mongoose.Schema({
