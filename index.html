@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Owner Dashboard</title>
+</head>
+<body>
+  <h2>Owner Control Panel</h2>
+  
+  <!-- Balance Add/Deduct -->
+  <h3>User ka Balance Badhayein ya Ghatayein</h3>
+  <input type="number" id="userId" placeholder="Telegram User ID">
+  <input type="number" id="amount" placeholder="Amount (e.g. 100 ya -50)">
+  <button onclick="updateBalance()">Update Balance</button>
+
+  <hr>
+
+  <!-- Add Keys -->
+  <h3>Naye Panel Keys Add Karein</h3>
+  <input type="text" id="panelName" placeholder="Panel ka Naam">
+  <textarea id="keyList" placeholder="Har line me 1 key likhein"></textarea>
+  <button onclick="addKeys()">Keys Upload Karein</button>
+
+  <script>
+    const ADMIN_KEY = "AAPKA_SECRET_ADMIN_KEY";
+
+    async function updateBalance() {
+      const userId = document.getElementById('userId').value;
+      const amount = document.getElementById('amount').value;
+      
+      const res = await fetch('/admin/update-balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-owner-key': ADMIN_KEY },
+        body: JSON.stringify({ userId: Number(userId), amount: Number(amount) })
+      });
+      const data = await res.json();
+      alert('Naya Balance: ₹' + data.newBalance);
+    }
+
+    async function addKeys() {
+      const panel = document.getElementById('panelName').value;
+      const keys = document.getElementById('keyList').value.split('\n');
+      
+      const res = await fetch('/admin/add-keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-owner-key': ADMIN_KEY },
+        body: JSON.stringify({ panel, keys })
+      });
+      alert('Keys Successfully Add Ho Gaye!');
+    }
+  </script>
+</body>
+</html>
